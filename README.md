@@ -66,6 +66,7 @@ server {
 ```
 For little more help on stream config and the http replacement config:
 https://nginx.org/en/docs/stream/ngx_stream_core_module.html
+
 https://nginx.org/en/docs/http/ngx_http_sub_module.html
 
 
