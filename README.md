@@ -1,5 +1,5 @@
 # Nginx Stream Dockerfile
-Nginx compiled with --with-stream to be able to create proxies or loadbalancers for non http protocols.
+Nginx compiled with --with-stream and --ngx_http_sub_module to be able to create proxies or loadbalancers for non http protocols.
 
 This repository contains **Dockerfile** of Nginx Stream
 
@@ -12,18 +12,18 @@ This repository contains **Dockerfile** of Nginx Stream
 
 1. Install [Docker](https://www.docker.com/).
 
-2. Download: `docker pull tekn0ir/nginx-stream`
+2. Download: `docker pull tobend/nginx-stream-http_sub_module`
 
 (alternatively, you can build an image from Dockerfile: 
 ```bash
-$ docker build -t="tekn0ir/nginx-stream" github.com/tekn0ir/nginx-stream
+$ docker build -t="tobend/nginx-stream-http_sub_module" github.com/tobend/nginx-stream-http_sub_module
 ```
 
 ### Usage
 
-Start deamon
+Start deamon with configs
 ```bash
-$ docker run -d -p 0.0.0.0:80:80 --name nginx tekn0ir/nginx-stream
+$ docker run -d -p 80:80 -p 11122:11122 -v `pwd`\http.conf.d:/opt/nginx/http.conf.d  -v `pwd`\stream.conf.d:/opt/nginx/stream.conf.d --name nginx tobend/nginx-stream-http_sub_module
 ```
 
 ### Configure
@@ -31,11 +31,19 @@ Create configuration files in folders example:
 ```bash
 .
 |
-|-- http.conf.d
-|   `-- myhttpservice.conf
-|
 |-- stream.conf.d
-    `-- myotherservice.conf
+|   `-- tunnel.conf
+|
+|-- http.conf.d
+    `-- myhttpservice.conf
+```
+
+tunnel.conf example config:
+```conf
+server {
+    listen 11122;
+    proxy_pass 192.168.2.4:22;
+}
 ```
 
 myhttpservice.conf example config:
@@ -50,31 +58,17 @@ server {
     listen 80;
 
     location / {
-        proxy_pass http://myapp1;
-    }
+        proxy_pass myhttpservice;
+        sub_filter '<a href="http://127.0.0.1:8080/'  '<a href="https://$host/';
+        sub_filter_once on;
+  }
 }
 ```
-
-myotherservice.conf example config:
-```conf
-upstream myotherservice {
-    server srv1.example.com;
-    server srv2.example.com;
-    server srv3.example.com;
-}
-
-server {
-    listen 65432;
-    proxy_pass myotherservice;
-}
-```
-For little more help on stream config:
+For little more help on stream config and the http replacement config:
 https://nginx.org/en/docs/stream/ngx_stream_core_module.html
+https://nginx.org/en/docs/http/ngx_http_sub_module.html
 
-Start deamon with configs
-```bash
-$ docker run -d -p 80:80 -p 65432:65432 -v `pwd`\http.conf.d:/opt/nginx/http.conf.d  -v `pwd`\stream.conf.d:/opt/nginx/stream.conf.d --name nginx tekn0ir/nginx-stream
-```
+
 
 ### Zero downtime reloading of changed configs
 If you change settings and need to relaod them on a running container w/o downtime
