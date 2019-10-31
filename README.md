@@ -27,7 +27,7 @@ $ docker run -d -p 80:80 -p 11122:11122 -v `pwd`\http.conf.d:/opt/nginx/http.con
 ```
 
 ### Configure
-Create configuration files in folders example:
+Example configuration files:
 ```bash
 .
 |
@@ -65,6 +65,7 @@ server {
 }
 ```
 For little more help on stream config and the http replacement config:
+
 https://nginx.org/en/docs/stream/ngx_stream_core_module.html
 
 https://nginx.org/en/docs/http/ngx_http_sub_module.html
