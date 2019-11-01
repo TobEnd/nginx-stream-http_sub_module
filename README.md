@@ -12,9 +12,8 @@ This repository contains **Dockerfile** of Nginx Stream and Nginx HTTP Sub Modul
 
 1. Install [Docker](https://www.docker.com/).
 
-2. Download: `docker pull tobend/nginx-stream-http_sub_module`
+2. Build: 
 
-(alternatively, you can build an image from Dockerfile: 
 ```bash
 $ docker build -t="tobend/nginx-stream-http_sub_module" github.com/tobend/nginx-stream-http_sub_module
 ```
