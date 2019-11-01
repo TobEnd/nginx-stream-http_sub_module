@@ -1,5 +1,5 @@
 # Nginx Stream Dockerfile
-Nginx compiled with --with-stream and --ngx_http_sub_module to be able to create proxies or loadbalancers for non http protocols and modify responses by replacing specified strings.
+Nginx compiled with --with-stream and --with-http_sub_module to be able to create proxies or loadbalancers for non http protocols and modify responses by replacing specified strings.
 
 This repository contains **Dockerfile** of Nginx Stream and Nginx HTTP Sub Module
 
