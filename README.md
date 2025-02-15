@@ -63,7 +63,7 @@ server {
   }
 }
 ```
-For little more help on stream config and the http replacement config:
+For more help on stream configuration and the http replacement config:
 
 https://nginx.org/en/docs/stream/ngx_stream_core_module.html
 
